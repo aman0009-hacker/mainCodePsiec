@@ -1,5 +1,9 @@
 <?php
 
+use App\Admin\Controllers\CustomPageController;
+use App\Http\Controllers\headerController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SmsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OTPHandleController;
 use App\Http\Controllers\DocumentProcessController;
@@ -31,6 +35,8 @@ use App\Http\Controllers\NewUpdatedController;
 Route::get('/', function () {
     return view('home');
 })->name('home');
+// Route::get('/',[HomeController::class,'home'])->name('home');
+
 Route::get('/home', function () {
     return view('home');
 })->name('/home');
@@ -199,3 +205,14 @@ Route::get("/payment/complete/process/{id}/{status}", [PaymentController::class,
 
 // Route::get("/payment/method/change/{paymentMode}", [PaymentController::class, 'paymentMethodChange'])->name('payment.method.change');
 Route::get("/payment/method/change/{paymentMode}/{data}", [PaymentController::class, 'paymentMethodChange'])->name('payment.method.change');
+
+
+Route::get("/header",[headerController::class,'headers']);
+
+Route::get("/chatcount", [App\Admin\Controllers\CustomPageController::class, 'chatCount'])->name('chatCount');
+
+
+
+Route::get('/adminChatCount',[CustomPageController::class,'admin_read_message']);
+
+

@@ -2,7 +2,9 @@
 
 namespace App\Admin\Actions;
 
+use App\Models\Comments;
 use Encore\Admin\Actions\RowAction;
+use Encore\Admin\Facades\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Crypt;
@@ -16,8 +18,10 @@ class OrderApproved extends RowAction
     //protected $selector = '.order-approved';
     public function handle(Model $model)
     {
+          
         try {
             $id = $model->id;
+            
             $encryptedID = Crypt::encryptString($model->id);
             if (isset($id) && !empty($id)) {
                 $data = Order::find($id);
@@ -26,9 +30,10 @@ class OrderApproved extends RowAction
                 if ($data->save() == true) {
                     $user_id = Order::find($model->id)->user_id;
                     $emailData = User::join('orders', 'users.id', '=', 'orders.user_id')
-                        ->where('orders.user_id', $user_id)
-                        ->select('users.email')
-                        ->first();
+                    ->where('orders.user_id', $user_id)
+                    ->select('users.email')
+                    ->first();
+                   
                     // $user_id=Order::find($model->id)->user_id;
                     if (isset($emailData)) {
                         $emailDataName = $emailData->email;
@@ -41,6 +46,22 @@ class OrderApproved extends RowAction
                             'status' => 'OrderApprove'
                         ];
                         \Mail::to($emailDataName)->send(new \App\Mail\PSIECMail($details));
+                        $userid = $model->id;
+                       
+                        $adminid = Admin::user()->id;
+                          $orderData=order::find($userid);
+                         
+                       
+                                   
+                        $comment = new Comments;
+                        $comment->user_id = $orderData->user_id;
+                        $comment->admin_id = $adminid;
+                        $comment->comment = 'Your Order No : '.$orderData->order_no.' has been approved';
+                        $comment->commented_by = "admin";
+                        $comment->username = Admin::user()->username;
+                        $comment->save();
+
+                       
                         //\mail::to('csanwalit@gmail.com')->send(new \App\Mail\PSIECMail($details));
                         //dd("Email is Sent.");
                     } else {

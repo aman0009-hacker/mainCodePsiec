@@ -1,0 +1,16 @@
+.maindesign
+{
+    position: relative;
+}
+
+.maindesign::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 5px;
+    height: 5px;
+    background-color: red;
+    left: 25px;
+    border-radius: 50%;
+    transform: translateY(-50%);
+}

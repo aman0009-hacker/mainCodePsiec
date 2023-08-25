@@ -1,5 +1,7 @@
 $(document).ready(function () {
     //location.reload(true);
+
+   
     $("#btnClear").on("click", function () {
         $("#textAreaMsg").val("");
     }
@@ -68,7 +70,7 @@ $(document).ready(function () {
                 // Handle any errors that occur during the AJAX request
             }
         });
-    }, 15000);
+    }, 1000);
     $('#btnSubmit').on("click", function (event) {
         event.preventDefault();
         var value = ($("#textAreaMsg").val());
@@ -129,4 +131,7 @@ $(document).ready(function () {
             }
         });
     });
-});
+
+   
+       
+    });

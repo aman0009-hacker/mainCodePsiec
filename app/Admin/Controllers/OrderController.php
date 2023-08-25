@@ -81,12 +81,13 @@ class OrderController extends AdminController
             // {
             // });
             $grid->column('status', __('Status'));
-          
+
             // $grid->column('payment_mode', __('Payment Mode'));
 
             $grid->column('payment_mode', __('Payment Mode'))->display(function ($title) {
                 $id = $this->id;
                 if ($title == "cheque") {
+                    
                     //return "<a style='color:#fff' class='btn btn-primary' onclick='fun($id)'>$title</a>";
                     return "<a style='color:#fff' class='btn btn-primary allbtn' id=$id>$title</a>";
                 } else {
@@ -99,7 +100,7 @@ class OrderController extends AdminController
                     $value = PaymentDataHandling::where('order_id', $this->id)->where('data', "Booking_Amount")->orderBy('created_at', 'desc')->first();
                     //return $value->transaction_amount ?? "Done";
                     if (isset($value->transaction_amount) && $value->transaction_amount !== "") {
-                        return "₹ ".$value->transaction_amount;
+                        return "₹ " . $value->transaction_amount;
                     } else {
                         return "N/A";
                     }
@@ -136,61 +137,27 @@ class OrderController extends AdminController
                     //return $userID;
                     if (isset($userID) && !empty($userID)) {
                         $member_at = User::find($userID)->member_at;
+
                         if (isset($member_at) && !empty($member_at)) {
                             $customerStartDate = Carbon::parse($member_at);
+
                             $threeYearsAgo = Carbon::now()->subYears(3);
                             if ($customerStartDate <= $threeYearsAgo) {
                                 if ($this->payment_mode == "cheque") {
-
-
-
-                                    // $chequeAmount = $this->check_amount;
-                                    // $chequePaymentDate = Carbon::parse($this->Cheque_Date);
-                                    // $interestWithinAllowedPeriod = 0;
-                                    // $allowedDays = 20;
-                                    // $interestRateWithin20Days = 13; // 13% interest
-                                    // $maxAllowedDays = 60;
-                                    // $additionalInterestRateBeyond20Days = 15; // 15% interest
-                                    // // Calculate the due date to the controller (20 days from payment date)
-                                    // $dueDate = $chequePaymentDate->copy()->addDays($allowedDays);
-                                    // // Calculate the number of days within the allowed period
-                                    // $daysWithinAllowedPeriod = min($dueDate->diffInDays(Carbon::now()), $allowedDays);
-                                    // if ($daysWithinAllowedPeriod === 0) {
-                                    //     // Calculate interest amount within the allowed period (0% interest)
-                                    //     $interestWithinAllowedPeriod = 0;
-                                    // } else {
-                                    //     // Calculate interest amount within the allowed period
-                                    //     $interestWithinAllowedPeriod = ($daysWithinAllowedPeriod * $interestRateWithin20Days * 0.01);
-                                    // }
-                                    // // Calculate the number of days beyond the allowed period
-                                    // $daysBeyondAllowedPeriod = max($dueDate->diffInDays(Carbon::now()) - $allowedDays, 0);
-                                    // // Calculate interest amount beyond the allowed period, up to a maximum of 60 days
-                                    // $interestBeyondAllowedPeriod = ($daysBeyondAllowedPeriod <= $maxAllowedDays)
-                                    //     ? ($daysBeyondAllowedPeriod * $additionalInterestRateBeyond20Days * 0.01)
-                                    //     : ($maxAllowedDays * $additionalInterestRateBeyond20Days * 0.01);
-                                    // // Total interest amount
-                                    // $totalInterestAmount = $interestWithinAllowedPeriod + $interestBeyondAllowedPeriod;
-                                    // $totalAmount = $chequeAmount + $totalInterestAmount;
-                                    // // Check if the max allowed days (60 days) are over
-                                    // if ($daysBeyondAllowedPeriod > $maxAllowedDays) {
-                                    //     // Return a specific message or value for the case when max allowed days are over
-                                    //     return "Wrong Cheque";
-                                    // }
-                                    // return $totalAmount;
                                     if (isset($this->cheque_final_amount) && !empty($this->cheque_final_amount)) {
                                         return $this->cheque_final_amount;
                                     }
                                     $chequeAmount = $this->check_amount;
-                                    if($chequeAmount===null || $chequeAmount==="")
-                                    {
+
+                                    if ($chequeAmount === null || $chequeAmount === "") {
                                         return "N/A";
                                     }
                                     $chequePaymentDate = Carbon::parse($this->Cheque_Date);
                                     $interestWithinAllowedPeriod = 0;
                                     $allowedDays = 20;
-                                    $interestRateWithin20Days = 13; // 13% interest
+                                    $interestRateWithin20Days = .13; // 13% interest
                                     $maxAllowedDays = 60;
-                                    $additionalInterestRateBeyond20Days = 15; // 15% interest
+                                    $additionalInterestRateBeyond20Days = .15; // 15% interest
 
                                     $orderChequeArrivalDate = null;
                                     $chequeArrivalDateWithinAllowedPeriod = false;
@@ -198,48 +165,35 @@ class OrderController extends AdminController
                                         $orderChequeArrivalDate = Carbon::parse($this->cheque_arrival_date);
                                         $chequeArrivalDateWithinAllowedPeriod = $orderChequeArrivalDate->greaterThanOrEqualTo($chequePaymentDate) &&
                                             $orderChequeArrivalDate->diffInDays($chequePaymentDate) <= $maxAllowedDays;
+
                                     }
+                                    $current = Carbon::now();
+                                    $date = $current->diffInDays($chequePaymentDate);
+                                    $currentDate = Carbon::now()->toDateString();
+                                    if ($this->Cheque_Date > $currentDate || $this->Cheque_Date === $currentDate) {
 
-                                    // Calculate the due date to the controller (20 days from payment date)
-                                    $dueDate = $chequePaymentDate->copy()->addDays($allowedDays);
-
-                                    // Calculate the number of days within the allowed period
-                                    $daysWithinAllowedPeriod = min($dueDate->diffInDays(Carbon::now()), $allowedDays);
-
-                                    if ($daysWithinAllowedPeriod === 0) {
-                                        // Calculate interest amount within the allowed period (0% interest)
                                         $interestWithinAllowedPeriod = 0;
-                                    } else {
+                                    } elseif ($date <= 20) {
+
                                         // Calculate interest amount within the allowed period
-                                        $interestWithinAllowedPeriod = ($daysWithinAllowedPeriod * $interestRateWithin20Days * 0.01);
-                                    }
+                                        $interestWithinAllowedPeriod = $this->check_amount * $date * $interestRateWithin20Days * 1 / 365;
 
-                                    // Calculate the number of days beyond the allowed period
-                                    $daysBeyondAllowedPeriod = $chequeArrivalDateWithinAllowedPeriod
-                                        ? max($orderChequeArrivalDate->diffInDays(Carbon::now()) - $allowedDays, 0)
-                                        : 0;
+                                        if ($date == 20) {
+                                            $order = Order::with('user')->find($this->id);
+                                            $order->interest_within_allowed_period = $interestWithinAllowedPeriod;
+                                            $order->save();
+                                        }
+                                    } elseif ($date <= 60) {
 
-                                    // Calculate interest amount beyond the allowed period, up to a maximum of 60 days
-                                    $interestBeyondAllowedPeriod = ($daysBeyondAllowedPeriod <= $maxAllowedDays)
-                                        ? ($daysBeyondAllowedPeriod * $additionalInterestRateBeyond20Days * 0.01)
-                                        : ($maxAllowedDays * $additionalInterestRateBeyond20Days * 0.01);
-
-                                    // Total interest amount
-                                    $totalInterestAmount = $interestWithinAllowedPeriod + $interestBeyondAllowedPeriod;
-                                    $totalAmount = $chequeAmount + $totalInterestAmount;
-
-                                    // Check if the max allowed days (60 days) are over
-                                    if ($daysBeyondAllowedPeriod > $maxAllowedDays) {
-                                        // Return a specific message or value for the case when max allowed days are over
+                                        $order = Order::with('user')->find($this->id);
+                                        $final_interst = $date - 20;
+                                        $interestWithinAllowedPeriod = $this->check_amount * $final_interst * $additionalInterestRateBeyond20Days * 1 / 365;
+                                        $interestWithinAllowedPeriod = $interestWithinAllowedPeriod + $order->interest_within_allowed_period;
+                                    } else {
                                         return "Wrong Check";
                                     }
-
-                                    return $totalAmount;
-
-
-
-
-
+                                    $totalAmount = $chequeAmount + $interestWithinAllowedPeriod;
+                                    return round($totalAmount, 2);
                                 } else {
                                     return "N/A";
                                 }
@@ -266,8 +220,7 @@ class OrderController extends AdminController
                                     if ($customerStartDate <= $threeYearsAgo) {
                                         if ($this->payment_mode == "cheque") {
                                             $chequeAmount = $this->check_amount;
-                                            if($chequeAmount===null || $chequeAmount==="")
-                                            {
+                                            if ($chequeAmount === null || $chequeAmount === "") {
                                                 return "N/A";
                                             }
                                             $chequePaymentDate = Carbon::parse($this->Cheque_Date);
@@ -280,6 +233,7 @@ class OrderController extends AdminController
                                             $dueDate = $chequePaymentDate->copy()->addDays($allowedDays);
                                             // Calculate the number of days within the allowed period
                                             $daysWithinAllowedPeriod = min($dueDate->diffInDays(Carbon::now()), $allowedDays);
+                                            dd($daysWithinAllowedPeriod);
                                             if ($daysWithinAllowedPeriod === 0) {
                                                 // Calculate interest amount within the allowed period (0% interest)
                                                 $interestWithinAllowedPeriod = 0;
@@ -404,6 +358,8 @@ class OrderController extends AdminController
             <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             <link rel="stylesheet" href="../css/modal.css">
+            
+            
             <style>
             input[type=file] {
                   margin-bottom: 20px;

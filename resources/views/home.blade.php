@@ -2,6 +2,10 @@
 @section('content')
 <!--  Banner Section -->
 <section class="banner">
+
+  <div id="icon-container" class="scroling">
+    <i class="fas fa-arrow-up" id="scroll-icon"></i>
+  </div>  
   <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
       <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"

@@ -18,6 +18,35 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/category.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('css/raw-material.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('css/total-payment.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    
+    <style>
+         #icon-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+#scroll-icon {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.scroling {
+    opacity: 1;
+    background: #F2881D;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+}
+    </style>
 </head>
 
 <body>
@@ -32,6 +61,31 @@
     <script src="{{asset('js/productcategory.js')}}"></script>
     <script src="{{asset('js/booking.js')}}"></script>
     <script src="{{asset('js/order.js')}}"></script>
-</body>
+    <script>
+        const iconContainer = document.getElementById("icon-container");
+const scrollIcon = document.getElementById("scroll-icon");
 
+// Function to check the scroll position and toggle the icon visibility
+function toggleIconVisibility() {
+  if (window.scrollY > 0) {
+    iconContainer.style.opacity = "1";
+  } else {
+    iconContainer.style.opacity = "0";
+  }
+}
+
+// Attach an event listener to the scroll event
+window.addEventListener("scroll", toggleIconVisibility);
+
+// Smoothly scroll to the top when the icon is clicked
+scrollIcon.addEventListener("click", () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+});
+
+    </script>
+</body>
+ 
 </html>
