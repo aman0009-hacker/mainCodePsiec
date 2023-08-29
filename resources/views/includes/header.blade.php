@@ -125,7 +125,7 @@ opacity: 0.9; /* Initial opacity */
                   </a>  --}}
                 
 
-
+                  
 
                  @if ($payment_data!==null || $payment_data !=="" || $payment_data!==[])
                  <div class="dropdown ">
