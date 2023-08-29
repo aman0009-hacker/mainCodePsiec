@@ -15,7 +15,7 @@ let arr=response.data
                if(element.user_id == dataKey)
                {
                 var element=row.childNodes[23];
-                element.classList.add('maindesign');
+                element.classList.add('maindesign') ;
                       
                }
             });
@@ -26,6 +26,3 @@ let arr=response.data
     }
 })
 
-// window.addEventListener('load', function () {
-//     location.reload(true); // Force a hard reload
-// });

@@ -1,6 +1,7 @@
 <?php
 
 use App\Admin\Controllers\CustomPageController;
+use App\Http\Controllers\FirstPageController;
 use App\Http\Controllers\headerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SmsController;
@@ -32,14 +33,21 @@ use App\Http\Controllers\NewUpdatedController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/', function () {
-    return view('home');
-})->name('home');
-// Route::get('/',[HomeController::class,'home'])->name('home');
+// Route::get('/', function () {
+//     return view('home');
+// })-;
+Route::get('/', [FirstPageController::class,'home'])->name('home');
 
-Route::get('/home', function () {
-    return view('home');
-})->name('/home');
+
+// Route::get('/',[HomeController::class,'home'])->name('home');
+Route::get('header',[HomeController::class,'home']);
+
+// Route::get('/home', function () {
+//     return view('home');
+// })->name('/home');
+
+Route::get('/home', [FirstPageController::class,'home'])->name('/home');
+
 Route::get('signup', function () {
     return view('auth.signUp');
 })->name('signUp');

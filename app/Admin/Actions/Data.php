@@ -2,8 +2,10 @@
 
 namespace App\Admin\Actions;
 
+use App\Models\Comments;
 use Encore\Admin\Actions\RowAction;
 use App\Models\Attachment;
+use Encore\Admin\Facades\Admin;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
@@ -54,6 +56,24 @@ class Data extends RowAction
 
                         ];
                         \Mail::to($emailDataName)->send(new \App\Mail\PSIECMail($details));
+
+                        $userId=$model->id;
+                        $adminId=Admin::user()->id;
+                        $adminName=Admin::user()->username;
+                        $comment=new Comments;
+                        $comment->comment="Your Registration has been approved ,Please fill the payment of registration";
+                        $comment->user_id=$userId;
+                        $comment->admin_id-$adminId;
+                        $comment->commented_by="admin";
+                        $comment->username=$adminName;
+
+
+
+
+                        
+
+                        
+
                         //\mail::to('csanwalit@gmail.com')->send(new \App\Mail\PSIECMail($details));
                         //dd("Email is Sent.");
                     } else {

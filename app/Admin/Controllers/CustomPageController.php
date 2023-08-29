@@ -241,20 +241,31 @@ class CustomPageController extends AdminController
 
     public function chatCount()
     {
-        $queryData = User::join('comments', 'users.id', '=', 'comments.user_id')
-            ->where('comments.user_id', auth()->user()->id)
-            ->orderBy('comments.created_at', 'desc')
-            ->select('comments.*')
-            ->first();
+
+        if(Auth::check())
+        {
             
-            if ($queryData) {
-            $admin_id = $queryData->admin_id;
-            $chatCount = Comments::latest()
-            ->where('admin_id', $admin_id)
-            ->where('user_id', Auth::user()->id)
-            ->whereNull('read_at')
-            ->count();
-            return response()->json(["msg" => "success", 'chatCount' => $chatCount]);
+            $queryData = User::join('comments', 'users.id', '=', 'comments.user_id')
+                ->where('comments.user_id', auth()->user()->id)
+                ->orderBy('comments.created_at', 'desc')
+                ->select('comments.*')
+                ->first();
+                
+                if ($queryData) {
+                $admin_id = $queryData->admin_id;
+                $chatCount = Comments::latest()
+                ->where('admin_id', $admin_id)
+                ->where('user_id', Auth::user()->id)
+                ->whereNull('read_at')
+                ->count();
+                return response()->json(["msg" => "success", 'chatCount' => $chatCount]);
+            }
+
+            else
+
+            {
+                return response()->json(["msg" => "success", 'chatCount' => '']); 
+            }
         }
 
         return response()->json(["msg" => "success", 'chatCount' => '']);

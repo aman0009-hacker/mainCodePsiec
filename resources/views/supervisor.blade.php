@@ -66,10 +66,17 @@
     }
 
     input,
-    textarea,
-    select {
+    textarea {
         border: 1px solid #ccc;
         padding: 6px 11px;
+    }
+    select
+    {
+        padding: 7.3px 11px;
+    }
+    input[type="number"]
+    {
+        padding:7px 11px;
     }
 
     textarea {
@@ -79,8 +86,9 @@
     span.icon {
         border: 1px solid #ccc;
         border-right: 0px;
-        padding: 6px 11px;
-        / margin-top: 5px;/ display: inline-block;
+        padding: 7px 11px;
+         /* margin-top: 5px; */
+         display: inline-block;
     }
 
     .quanchange {
@@ -143,11 +151,11 @@
     }
 
     .addbtn {
-        font-weight: 900;
-        font-size: 18px;
-
-        padding: 3px 13px;
-    }
+    font-weight: 900;
+    font-size: 18px;
+    padding: 5px 13px;
+    height: fit-content;
+}
 
     .add-sub {
         display: flex;

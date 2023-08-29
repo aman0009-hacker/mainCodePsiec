@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\PaymentDataHandling;
 use Illuminate\Http\Request;
 
-class HomeController extends Controller
+class FirstPageController extends Controller
 {
-public function home()
-{
-    $id=\Auth::user()->id;
+    public function home()
+    {
+        $id=\Auth::user()->id;
    
    $payment_data = PaymentDataHandling::where('user_id', $id)
     ->where('payment_status', 'SUCCESS')
@@ -18,6 +18,6 @@ public function home()
    
   
     
-    return view('layouts.main',compact('payment_data'));
-}
+    return view('home',compact('payment_data'));
+    }
 }

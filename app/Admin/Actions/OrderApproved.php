@@ -20,6 +20,10 @@ class OrderApproved extends RowAction
     {
           
         try {
+            $userid = $model->id;
+                 
+                       
+            $adminid = Admin::user()->id;
             $id = $model->id;
             
             $encryptedID = Crypt::encryptString($model->id);
@@ -47,6 +51,7 @@ class OrderApproved extends RowAction
                         ];
                         \Mail::to($emailDataName)->send(new \App\Mail\PSIECMail($details));
                         $userid = $model->id;
+                    
                        
                         $adminid = Admin::user()->id;
                           $orderData=order::find($userid);
