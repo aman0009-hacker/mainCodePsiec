@@ -101,6 +101,7 @@ class DocumentProcessController extends Controller
   }
   public function documentOutput(Request $request)
   {
+ 
     return redirect()->route('home')->with(['tab' => "myaccount"]);
   }
 

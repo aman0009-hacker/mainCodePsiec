@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('comments', function (Blueprint $table) {
-            $table->string('read_by')->nullable()->after('comment');
+            $table->string('read_at')->nullable()->after('comment');
         });
     }
 
